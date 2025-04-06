@@ -149,4 +149,17 @@ public function submitReview(Request $request, $id)
     return redirect()->route('product.review', ['id' => $id])->with('success', 'Review submitted successfully.');
 }
 
+public function getProductReviews($product_id)
+{
+    $reviews = DB::table('reviews')
+        ->join('users', 'reviews.user_id', '=', 'users.id')
+        ->where('reviews.product_id', $product_id)
+        ->select('users.name as reviewer_name', 'reviews.rating', 'reviews.comment', 'reviews.created_at')
+        ->orderBy('reviews.created_at', 'desc')
+        ->get();
+
+    return response()->json($reviews);
+}
+
+
 }

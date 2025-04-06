@@ -44,15 +44,25 @@ Route::post('/cart/remove-selected', [CartController::class, 'removeSelectedItem
 Route::post('/cart/buy-selected', [CartController::class, 'buySelectedItems']);
 
 // Order Routes
-Route::post('/order/create', [App\Http\Controllers\OrderController::class, 'createOrderFromItems']);
-Route::get('/orders/active', [App\Http\Controllers\OrderController::class, 'getActiveOrders']);
+Route::post('/order/create', [OrderController::class, 'createOrderFromItems']);
+Route::get('/orders/active', [OrderController::class, 'getActiveOrders']);
 Route::post('/orders/update/{orderId}', [OrderController::class, 'updateOrderStatus']);
 Route::get('/orders/history', [OrderController::class, 'getOrderHistory']);
 
-// Admin Order Routes (Added for Admin functionality)
+// Admin Order Routes
 Route::get('/admin/orders', [OrderController::class, 'getAllOrders'])->name('admin.orders');
 Route::get('/admin/orders/{orderId}', [OrderController::class, 'getOrderDetails'])->name('admin.orders.details');
 Route::put('/admin/orders/update/{orderId}', [OrderController::class, 'updateOrderStatus'])->name('admin.orders.update');
 
-// Route to show review form for a specific product
+// Review Routes
 Route::get('/user/products/{id}/review', [ProductController::class, 'showProductForReview']);
+Route::get('/review/{product_id}/{order_id}', [ReviewController::class, 'showReviewForm'])->name('review.form');
+Route::post('/review/submit', [ReviewController::class, 'submitReview'])->name('review.submit');
+Route::get('/product/{product_id}/reviews', [ProductController::class, 'getProductReviews']);
+Route::get('/user/reviews', [ReviewController::class, 'getUserReviews']);
+
+// Admin Review Routes (New)
+Route::prefix('admin')->group(function () {
+    Route::get('/reviews', [ReviewController::class, 'adminIndex'])->name('admin.reviews');
+    Route::post('/reviews/delete/{id}', [ReviewController::class, 'adminDelete'])->name('admin.reviews.delete');
+});

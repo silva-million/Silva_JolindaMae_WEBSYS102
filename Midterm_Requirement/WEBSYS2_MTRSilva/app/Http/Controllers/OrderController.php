@@ -135,17 +135,23 @@ class OrderController extends Controller
             ->whereIn('status', ['completed', 'received'])
             ->get();
 
-        $orders = $orders->map(function ($order) {
-            $order->products = DB::table('order_items')
-                ->join('products', 'order_items.product_id', '=', 'products.id')
-                ->where('order_items.order_id', $order->id)
-                ->select('products.id as product_id', 'products.name', 'products.price')
-                ->get();
+            $orders = $orders->map(function ($order) {
+                $order->products = DB::table('order_items')
+                    ->join('products', 'order_items.product_id', '=', 'products.id')
+                    ->where('order_items.order_id', $order->id)
+                    ->select('products.id as product_id', 'products.name', 'products.price')
+                    ->get()
+                    ->map(function ($product) use ($order) {
+                        $product->review_exists = DB::table('reviews')
+                            ->where('product_id', $product->product_id)
+                            ->where('user_id', session('user_id'))
+                            ->exists();
+                        return $product;
+                    });
 
-            $order->can_review = true;
+                return $order;
+            });
 
-            return $order;
-        });
 
         return response()->json($orders);
     }

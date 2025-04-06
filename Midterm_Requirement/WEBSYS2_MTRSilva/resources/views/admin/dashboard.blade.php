@@ -25,7 +25,7 @@
             <div class="card dashboard-card h-100 p-4 d-flex flex-column">
                 <h5>Customer Reviews</h5>
                 <p class="flex-grow-1">See what your pet-loving customers are saying.</p>
-                <a href="#" class="btn btn-primary mt-auto">Manage Reviews</a>
+                <a href="{{ route('admin.reviews') }}" class="btn btn-primary mt-auto">Manage Reviews</a>
             </div>
         </div>
     </div>

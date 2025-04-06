@@ -1,20 +1,50 @@
-<form action="{{ route('product.submitReview', ['id' => $product->id]) }}" method="POST">
-    @csrf
-    <div class="mb-3">
-        <label for="review" class="form-label">Your Review</label>
-        <textarea class="form-control" id="review" name="review" rows="4" required></textarea>
-    </div>
+@extends('layout.user')
 
-    <div class="mb-3">
-        <label for="rating" class="form-label">Rating</label>
-        <select class="form-select" id="rating" name="rating" required>
-            <option value="1">1 Star</option>
-            <option value="2">2 Stars</option>
-            <option value="3">3 Stars</option>
-            <option value="4">4 Stars</option>
-            <option value="5">5 Stars</option>
-        </select>
-    </div>
+@section('content')
+<div class="container py-5">
+    <div class="card p-4 shadow-sm">
+        <h3 class="mb-4 text-center">Review Product</h3>
 
-    <button type="submit" class="btn btn-primary">Submit Review</button>
-</form>
+        <h5 class="mb-3">{{ $product->name }}</h5>
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('review.submit') }}">
+            @csrf
+
+            <input type="hidden" name="product_id" value="{{ $product->id }}">
+            <input type="hidden" name="order_id" value="{{ $order->id }}">
+
+            <div class="mb-3">
+                <label for="rating" class="form-label">Rating</label>
+                <select name="rating" class="form-select" required>
+                    <option value="">Select Rating</option>
+                    @for ($i = 1; $i <= 5; $i++)
+                        <option value="{{ $i }}">{{ $i }} Star{{ $i > 1 ? 's' : '' }}</option>
+                    @endfor
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="comment" class="form-label">Your Review</label>
+                <textarea name="comment" class="form-control" rows="4" placeholder="Write your experience..." required></textarea>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success">Submit Review</button>
+                <a href="/user" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
