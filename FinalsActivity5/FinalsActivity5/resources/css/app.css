@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #cdb4db;   /* lavender */
+    --color-secondary: #ffc8dd; /* soft pink */
+    --color-accent: #ffafcc;    /* vibrant pink */
+    --color-info: #bde0fe;      /* pastel blue */
+    --color-light: #a2d2ff;     /* soft sky */
+    --color-text: #3c1f47;      /* dark purple for readable text */
+    --color-bg: #ffffff;        /* full white background */
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[color:var(--color-secondary)] text-black hover:bg-[color:var(--color-accent)];
+  }
+
+  .form-card {
+    @apply bg-[color:var(--color-primary)] p-8 rounded-xl shadow-xl max-w-md mx-auto;
+  }
+
+  .form-label {
+  @apply text-[color:var(--color-text)] text-sm font-semibold;
+}
+
+.form-input {
+  @apply bg-white text-black rounded-md w-full mt-1 px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-accent)];
+}
+
+
+  .form-link {
+    @apply underline text-sm text-[color:var(--color-accent)] hover:text-[color:var(--color-text)] transition;
+  }
+}
